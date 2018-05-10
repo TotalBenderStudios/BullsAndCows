@@ -17,7 +17,7 @@ int32 FBullCowGame::GetMaxTries() const
 
 void FBullCowGame::Reset()
 {
-	const FString HIDDEN_WORD = "planet";
+	const FString HIDDEN_WORD = "planet"; // must be an isogram
 	MyHiddenWord = HIDDEN_WORD;
 
 	MyCurrentTry = 1;
@@ -27,25 +27,21 @@ void FBullCowGame::Reset()
 
 EGuessStatus FBullCowGame::CheckGuessValidity(FString guess) const
 {
-	// if the guess isn't isogram
 	if (!IsIsogram(guess))
 	{
 		return EGuessStatus::Not_Isogram;
 	}
-	// if the guess isn't all lowercase
-
+	
 	if (!IsLowercase(guess))
 	{
 		return EGuessStatus::Not_Lowercase;
 	}
-	// if the guess length is wrong
 
 	if (guess.length() != GetHiddenWordLength())
 	{
 		return EGuessStatus::Wrong_Length;
 	}
 
-	// otherwise return OK
 	return EGuessStatus::OK;
 }
 

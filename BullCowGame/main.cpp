@@ -4,11 +4,14 @@
  * user interaction.
  */
 
+#pragma once
+
 #include <iostream>
 #include <string>
 #include <cctype>
 #include "FBullCowGame.h"
 
+// unreal friendly syntax
 using FText = std::string;
 using int32 = int;
 
@@ -27,7 +30,6 @@ int main()
 	{
 		PrintIntro();
 		PlayGame();
-		// TODO: Add a game summary
 		bPlayGain = AskToPlayAgain();
 	} while (bPlayGain);
 
@@ -40,8 +42,6 @@ void PrintIntro()
 	std::cout << "Welcome to Bulls and Cows, an amazeballs word game." << std::endl;
 	std::cout << "Can you guess the " << BCGame.GetHiddenWordLength() << " letter isogram I'm thinking of?" << std::endl;
 }
-
-
 
 void PlayGame()
 {
@@ -64,7 +64,7 @@ void PlayGame()
 }
 
 // loop until get valid guess
-FText GetValidGuess() // TODO: change to GetValidGuess
+FText GetValidGuess() 
 {
 	EGuessStatus status = EGuessStatus::Invalid_Status;
 	FText guess;

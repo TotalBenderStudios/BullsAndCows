@@ -1,6 +1,9 @@
+/* Game Logic */
+
 #pragma once
 #include <string>
 
+// unreal friendly syntax
 using FString = std::string;
 using int32 = int;
 
@@ -31,7 +34,6 @@ public:
 	bool IsGameWon() const;
 
 	void Reset();
-	
 	FBullCowCount SubmitValidGuess(FString);
 
 private:
