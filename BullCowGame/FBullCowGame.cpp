@@ -1,0 +1,109 @@
+#include "FBullCowGame.h"
+#include <map>
+#define TMap std::map
+
+FBullCowGame::FBullCowGame() { Reset(); }
+
+int32 FBullCowGame::GetMaxTries() const { return MyMaxTries; }
+int32 FBullCowGame::GetCurrentTry() const { return MyCurrentTry; }
+int32 FBullCowGame::GetHiddenWordLength() const { return MyHiddenWord.length(); }
+
+
+bool FBullCowGame::IsGameWon() const { return bGameIsWon; }
+
+void FBullCowGame::Reset()
+{
+	constexpr int MAX_TRIES = 8;
+	MyMaxTries = MAX_TRIES;
+
+	const FString HIDDEN_WORD = "planet";
+	MyHiddenWord = HIDDEN_WORD;
+
+	MyCurrentTry = 1;
+	bGameIsWon = false;
+	return;
+}
+
+EGuessStatus FBullCowGame::CheckGuessValidity(FString guess) const
+{
+	// if the guess isn't isogram
+	if (!IsIsogram(guess))
+	{
+		return EGuessStatus::Not_Isogram;
+	}
+	// if the guess isn't all lowercase
+
+	if (!IsLowercase(guess))
+	{
+		return EGuessStatus::Not_Lowercase;
+	}
+	// if the guess length is wrong
+
+	if (guess.length() != GetHiddenWordLength())
+	{
+		return EGuessStatus::Wrong_Length;
+	}
+
+	// otherwise return OK
+	return EGuessStatus::OK;
+}
+
+
+// receives valid guess, increment turn, and returns count
+FBullCowCount FBullCowGame::SubmitValidGuess(FString guess)
+{
+	MyCurrentTry++;
+	FBullCowCount bullCowCount;
+
+	const auto length = GetHiddenWordLength();
+	for (int32 myWordChar = 0; myWordChar < length; myWordChar++)
+	{
+		for (int32 guessChar = 0; guessChar < length; guessChar++)
+		{
+			if (guess[guessChar] == MyHiddenWord[myWordChar])
+			{
+				if (myWordChar == guessChar)
+				{
+					bullCowCount.Bulls++;
+				}
+				else
+				{
+					bullCowCount.Cows++;
+				}
+			}
+		}
+	}
+
+	bGameIsWon = bullCowCount.Bulls == length;
+
+	return bullCowCount;
+}
+
+bool FBullCowGame::IsIsogram(FString word) const
+{
+	if (word.length() <= 1) { return true; }
+
+	TMap<char, bool> letterSeen;
+	for (auto letter : word)
+	{
+		letter = tolower(letter);
+		if (letterSeen[letter])
+		{
+			return false;
+		}
+
+		letterSeen[letter] = true;
+	}
+
+	return true;
+}
+
+bool FBullCowGame::IsLowercase(FString word) const
+{
+	for (auto letter : word)
+	{
+		return islower(letter);
+	}
+
+	return false;
+}
